@@ -1,5 +1,24 @@
 ##
-# Reference: TReNDS Neuroimaging - Data Analysis & MATLAB Files by Gunes Evitan
+
+# Credits to the article "TReNDS Neuroimaging - Data Analysis & MATLAB Files" by Gunes Evitan
+#
+# data:
+#     attributes comes from two files: fnc, loading
+# target:
+#     five target features to predict
+# issue:
+#     training set consists of examples collectd from site 1 only
+#     test set is composed of examples collected from both sites 1 and 2.
+#     the partial list of site 2 ID is released.
+#
+# what Gunes Evitan did:
+# 1. use lightgbm to geneate the site feature base on a subset of fnc features and 
+#    all of the loading features using the Kolmogorov-Sminorov 2 sample test to find
+#    the essential features that are distributed differently across site 1 and 2.
+# 
+# 2020. June 22 by Li-Pin
+
+##
 
 # lightgbm: generate the site feature.
 # ks_2samp: identify features with difference in distribution across sites,
@@ -58,7 +77,6 @@ df['site'] = 0 # denote unknown
 df.loc[df['is_train'] == 1, 'site'] = 1
 df.loc[df['Id'].isin(site2_ids), 'site'] = 2
 df['site'] = np.dtype('int64').type(df['site'])
-
 
 
 """
@@ -212,7 +230,6 @@ test = pd.read_pickle('trends_test_data.pkl')
 with open('trends_variables.pkl','rb') as f:
     target_features, fnc_features, loading_features, site_predictors, features = pickle.load(f)
 
-##
 
 
 
